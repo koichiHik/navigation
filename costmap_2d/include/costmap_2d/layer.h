@@ -39,19 +39,17 @@
 
 #include <costmap_2d/costmap_2d.h>
 #include <costmap_2d/layered_costmap.h>
-#include <string>
 #include <tf2_ros/buffer.h>
+#include <string>
 
-namespace costmap_2d
-{
+namespace costmap_2d {
 class LayeredCostmap;
 
-class Layer
-{
-public:
+class Layer {
+ public:
   Layer();
 
-  void initialize(LayeredCostmap* parent, std::string name, tf2_ros::Buffer *tf);
+  void initialize(LayeredCostmap* parent, std::string name, tf2_ros::Buffer* tf);
 
   /**
    * @brief This is called by the LayeredCostmap to poll this plugin as to how
@@ -61,8 +59,8 @@ public:
    * For more details, see "Layered Costmaps for Context-Sensitive Navigation",
    * by Lu et. Al, IROS 2014.
    */
-  virtual void updateBounds(double robot_x, double robot_y, double robot_yaw, double* min_x, double* min_y,
-                            double* max_x, double* max_y) {}
+  virtual void updateBounds(double robot_x, double robot_y, double robot_yaw, double* min_x,
+                            double* min_y, double* max_x, double* max_y) {}
 
   /**
    * @brief Actually update the underlying costmap, only within the bounds
@@ -90,18 +88,12 @@ public:
    *        variable current_.
    * @return Whether the data in the layer is up to date.
    */
-  bool isCurrent() const
-  {
-    return current_;
-  }
+  bool isCurrent() const { return current_; }
 
   /** @brief Implement this to make this layer match the size of the parent costmap. */
   virtual void matchSize() {}
 
-  std::string getName() const
-  {
-    return name_;
-  }
+  std::string getName() const { return name_; }
 
   /** @brief Convenience function for layered_costmap_->getFootprint(). */
   const std::vector<geometry_msgs::Point>& getFootprint() const;
@@ -111,7 +103,7 @@ public:
    * notified of changes to the robot's footprint. */
   virtual void onFootprintChanged() {}
 
-protected:
+ protected:
   /** @brief This is called at the end of initialize().  Override to
    * implement subclass-specific initialization.
    *
@@ -120,11 +112,12 @@ protected:
 
   LayeredCostmap* layered_costmap_;
   bool current_;
-  bool enabled_;  ///< Currently this var is managed by subclasses. TODO: make this managed by this class and/or container class.
+  bool enabled_;  ///< Currently this var is managed by subclasses. TODO: make this managed by this
+                  ///< class and/or container class.
   std::string name_;
-  tf2_ros::Buffer *tf_;
+  tf2_ros::Buffer* tf_;
 
-private:
+ private:
   std::vector<geometry_msgs::Point> footprint_spec_;
 };
 
